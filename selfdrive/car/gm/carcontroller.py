@@ -61,11 +61,17 @@ class CarController(CarControllerBase):
   def calc_pedal_command(accel: float, long_active: bool, car_velocity) -> float:
     if not long_active: return 0.
     # Boltpilot pedal
-    if accel > 0:
-      pedaloffset = interp(car_velocity, [0., 3, 6, 30], [0.12, 0.190, 0.240, 0.265])
+    # if accel > 0:
+    #   pedaloffset = interp(car_velocity, [0., 3, 6, 30], [0.12, 0.190, 0.240, 0.265])
+    # else:
+    #   pedaloffset = interp(car_velocity, [0., 3, 6, 30], [0.12, 0.190, 0.240, 0.265])
+    # pedal_gas = clip((pedaloffset + accel*0.5), 0.0, 1.0)
+
+    if accel < -0.3:
+      pedal_gas = 0
     else:
       pedaloffset = interp(car_velocity, [0., 3, 6, 30], [0.12, 0.190, 0.240, 0.265])
-    pedal_gas = clip((pedaloffset + accel*0.5), 0.0, 1.0)
+      pedal_gas = clip((pedaloffset + accel * 0.5), 0.0, 1.0)
 
     return pedal_gas
 
